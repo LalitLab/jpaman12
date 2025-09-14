@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Gallery - Our Society</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .gallery-section {
+      margin: 2rem 0;
+    }
+
+    .gallery-section h2 {
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .slideshow-container {
+      position: relative;
+      max-width: 600px;
+      margin: auto;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .slide {
+      display: none;
+      width: 100%;
+      height: 350px;
+      object-fit: cover;
+    }
+
+    /* Next & prev buttons */
+    .prev, .next {
+      cursor: pointer;
+      position: absolute;
+      top: 50%;
+      width: auto;
+      padding: 10px;
+      margin-top: -22px;
+      color: white;
+      font-weight: bold;
+      font-size: 18px;
+      border-radius: 0 3px 3px 0;
+      user-select: none;
+      background: rgba(0,0,0,0.5);
+    }
+
+    .next {
+      right: 0;
+      border-radius: 3px 0 0 3px;
+    }
+
+    .prev:hover, .next:hover {
+      background-color: rgba(0,0,0,0.8);
+    }
+
+    /* Dots */
+    .dots {
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    .dot {
+      cursor: pointer;
+      height: 12px;
+      width: 12px;
+      margin: 0 4px;
+      background-color: #bbb;
+      border-radius: 50%;
+      display: inline-block;
+      transition: background-color 0.6s ease;
+    }
+
+    .active, .dot:hover {
+      background-color: #717171;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>📸 Gallery</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="notices.html">Notices</a>
+      <a href="contact.html">Contact</a>      
+    </nav>
+  </header>
+
+  <main class="gallery">
+    <!-- Section 1 -->
+    <section class="gallery-section">
+      <h2>Annual Day</h2>
+      <div class="slideshow-container" data-gallery="1">
+        <img src="photos/event1.jpg" class="slide">
+        <img src="photos/event2.jpg" class="slide">
+        <img src="photos/event3.jpg" class="slide"> 
+        <img src="photos/event3.jpg" class="slide"> 
+        <img src="photos/event3.jpg" class="slide"> 
+        <img src="photos/event3.jpg" class="slide"> 
+        <img src="photos/event3.jpg" class="slide"> 
+
+        <a class="prev">&#10094;</a>
+        <a class="next">&#10095;</a>
+      </div>
+      <div class="dots"></div>
+    </section>
+
+    <!-- Section 2 -->
+    <section class="gallery-section">
+      <h2>Sports Meet</h2>
+      <div class="slideshow-container" data-gallery="2">
+        <img src="photos/sports1.jpg" class="slide">
+        <img src="photos/sports2.jpg" class="slide">
+        <img src="photos/sports3.jpg" class="slide">
+
+        <a class="prev">&#10094;</a>
+        <a class="next">&#10095;</a>
+      </div>
+      <div class="dots"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Our Society</p>
+  </footer>
+
+  <script>
+    // Handle multiple galleries
+    document.querySelectorAll(".slideshow-container").forEach((container, index) => {
+      let slides = container.querySelectorAll(".slide");
+      let prev = container.querySelector(".prev");
+      let next = container.querySelector(".next");
+      let dotContainer = container.parentElement.querySelector(".dots");
+      let currentIndex = 0;
+      let timer;
+
+      // Create dots
+      slides.forEach((_, i) => {
+        let dot = document.createElement("span");
+        dot.classList.add("dot");
+        dot.addEventListener("click", () => showSlide(i));
+        dotContainer.appendChild(dot);
+      });
+
+      let dots = dotContainer.querySelectorAll(".dot");
+
+      function showSlide(i) {
+        slides.forEach(s => s.style.display = "none");
+        dots.forEach(d => d.classList.remove("active"));
+        currentIndex = (i + slides.length) % slides.length;
+        slides[currentIndex].style.display = "block";
+        dots[currentIndex].classList.add("active");
+      }
+
+      function nextSlide(n = 1) {
+        showSlide(currentIndex + n);
+      }
+
+      prev.addEventListener("click", () => nextSlide(-1));
+      next.addEventListener("click", () => nextSlide(1));
+
+      // Auto play
+      function autoPlay() {
+        nextSlide(1);
+        timer = setTimeout(autoPlay, 3000);
+      }
+
+      // Start
+      showSlide(0);
+      autoPlay();
+
+      // Pause on hover
+      container.addEventListener("mouseenter", () => clearTimeout(timer));
+      container.addEventListener("mouseleave", autoPlay);
+    });
+  </script>
+</body>
+</html>
